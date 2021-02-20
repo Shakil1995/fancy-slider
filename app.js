@@ -33,7 +33,8 @@ const showImages = (images) => {
   images.forEach(image => {
     let div = document.createElement('div');
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-    div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+    div.innerHTML = ` <img id="itemImage" class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}"
+     alt="${image.tags}">`;
     gallery.appendChild(div)
   })
   toggleSpinner();
@@ -45,21 +46,28 @@ const getImages = (query) => {
     .then(response => response.json())
     .then(data => showImages(data.hits))
       .catch(err => console.log(err))
+      // console.log(data);
   
 }
 
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
-  element.classList.add('added');
- 
+  // element.classList.add('added');
+  
  
   let item = sliders.indexOf(img);
   if (item === -1) {
+    element.classList.toggle('added');
     sliders.push(img);
+    
+    // console.log(element);
   } else {
+    element.classList.toggle('added');
+    sliders.splice(item ,1)
     // alert('Hey, Already added !')
-  
+    // imagesArea.classList.toggle('d-none')
+    
   }
 }
 
@@ -87,7 +95,22 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const duration = document.getElementById('create-slider').value || 1000;
+
+
+
+ 
+let duration;
+
+  const durationInput = document.getElementById('doration-input').value;
+  if(durationInput<0){
+    duration=1000;
+  }else{
+    duration=durationInput||1000;
+  }
+
+
+
+
   sliders.forEach(slide => {
     
     let item = document.createElement('div')
@@ -101,7 +124,15 @@ const createSlider = () => {
   timer = setInterval(function () {
     slideIndex++;
     changeSlide(slideIndex);
-  }, duration);
+  }, 
+  duration
+  // if(duration>0){
+  //   console.log(a);
+  // }else{
+
+  // }
+
+  );
 }
 
 // change slider index 
@@ -148,6 +179,12 @@ const toggleSpinner =() => {
   //  console.log(spinner.classList);
   // spinner.classList.remove('d-none');
   spinner.classList.toggle('d-none');
+}
+
+const selectImageToggle = () =>{
+s=document.getElementById('itemImage');
+s.classList.toggle('block');
+
 }
 
 
