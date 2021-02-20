@@ -36,10 +36,11 @@ const showImages = (images) => {
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
   })
-
+  toggleSpinner();
 }
 
 const getImages = (query) => {
+   toggleSpinner();
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
@@ -52,13 +53,19 @@ const selectItem = (event, img) => {
   let element = event.target;
   element.classList.add('added');
  
+ 
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
   } else {
-    alert('Hey, Already added !')
+    // alert('Hey, Already added !')
+  
   }
 }
+
+
+
+
 var timer
 const createSlider = () => {
   // check slider image length
@@ -71,8 +78,8 @@ const createSlider = () => {
   const prevNext = document.createElement('div');
   prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
   prevNext.innerHTML = ` 
-  <span class="prev" onclick="changeItem(-1)"><i class="fas fa-chevron-left"></i></span>
-  <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
+  <span class="prev" onclick="changeItem(-1)" ><i class="fas fa-chevron-left"></i></span>
+  <span class="next" onclick="changeItem(1)" ><i class="fas fa-chevron-right"></i></span>
   `;
 
   sliderContainer.appendChild(prevNext)
@@ -80,8 +87,9 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const duration = document.getElementById('duration').value || 1000;
+  const duration = document.getElementById('create-slider').value || 1000;
   sliders.forEach(slide => {
+    
     let item = document.createElement('div')
     item.className = "slider-item";
     item.innerHTML = `<img class="w-100"
@@ -131,5 +139,16 @@ searchBtn.addEventListener('click', function () {
 })
 
 sliderBtn.addEventListener('click', function () {
-  createSlider()
+  createSlider();
 })
+
+
+const toggleSpinner =() => {
+  const spinner = document.getElementById('loading-spinner');
+  //  console.log(spinner.classList);
+  // spinner.classList.remove('d-none');
+  spinner.classList.toggle('d-none');
+}
+
+
+
