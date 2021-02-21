@@ -1,3 +1,4 @@
+
 const imagesArea = document.querySelector('.images');
 const gallery = document.querySelector('.gallery');
 const galleryHeader = document.querySelector('.gallery-header');
@@ -32,9 +33,14 @@ const showImages = (images) => {
   galleryHeader.style.display = 'flex';
   images.forEach(image => {
     let div = document.createElement('div');
-    div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-    div.innerHTML = ` <img id="itemImage" class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}"
-     alt="${image.tags}">`;
+    div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2 ';
+    div.innerHTML = ` <img id="itemImage" class="img-fluid img-thumbnail"   onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL} "
+     alt="${image.tags}">
+     <h6> Image ID : ${image.id} </h6>
+     <h6> Total downloads : ${image.downloads} </h6> 
+     `;
+   console.log(image);
+
     gallery.appendChild(div)
   })
   toggleSpinner();
@@ -45,8 +51,9 @@ const getImages = (query) => {
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
+
       .catch(err => console.log(err))
-      // console.log(data);
+    
   
 }
 
@@ -65,14 +72,9 @@ const selectItem = (event, img) => {
   } else {
     element.classList.toggle('added');
     sliders.splice(item ,1)
-    // alert('Hey, Already added !')
-    // imagesArea.classList.toggle('d-none')
-    
+     
   }
 }
-
-
-
 
 var timer
 const createSlider = () => {
@@ -91,14 +93,9 @@ const createSlider = () => {
   `;
 
   sliderContainer.appendChild(prevNext)
-
-  document.querySelector('.main').style.display = 'block';
+ document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-
-
-
- 
 let duration;
 
   const durationInput = document.getElementById('doration-input').value;
@@ -126,13 +123,7 @@ let duration;
     changeSlide(slideIndex);
   }, 
   duration
-  // if(duration>0){
-  //   console.log(a);
-  // }else{
-
-  // }
-
-  );
+);
 }
 
 // change slider index 
@@ -177,15 +168,10 @@ sliderBtn.addEventListener('click', function () {
 const toggleSpinner =() => {
   const spinner = document.getElementById('loading-spinner');
   //  console.log(spinner.classList);
-  // spinner.classList.remove('d-none');
+
   spinner.classList.toggle('d-none');
 }
 
-const selectImageToggle = () =>{
-s=document.getElementById('itemImage');
-s.classList.toggle('block');
-
-}
 
 
 
